@@ -1,0 +1,71 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+eggs/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+.vscode/
+.idea/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# FastAPI specific
+logs/
+log/
+
+# Local development settings
+local_settings.py
+
+# Database files
+*.sqlite3
+*.db
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Model files and large data
+*.h5
+*.pkl
+*.model
+*.joblib
+data/
+
+# Documentation
+docs/_build/
