@@ -43,6 +43,7 @@ class MovieResponse(BaseModel):
     """Response model for movie data with embedded vector values."""
     
     id: str
+    score: Optional[float] = 0.0
     values: List[float] = []
     metadata: Movie
     

@@ -55,7 +55,6 @@ class VectorService:
                 
             result = response.json()
             embeddings = result.get("data", [])
-            print(f"Generated embedding for text: {embeddings}")
 
             # Validate the dimensions of returned embeddings
             for embedding in embeddings:
@@ -210,6 +209,7 @@ class VectorService:
                     
                 # Parse the response
                 result = response.json()
+                print(f"Fetched vectors: {result}")
                 return result.get("vectors", {})
                 
         except Exception as e:

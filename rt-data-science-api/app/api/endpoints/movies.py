@@ -166,6 +166,7 @@ async def get_recommendations(request: MovieRecommendRequest = Body(...)):
         for match in results.get("matches", []):
             try:
                 # Extract metadata and handle missing fields gracefully
+                print(f"Processing match: {match}")
                 movie_data = match.get("metadata", {})
                 
                 # Check if any required fields are missing and add defaults
@@ -180,6 +181,7 @@ async def get_recommendations(request: MovieRecommendRequest = Body(...)):
                 movies.append(
                     MovieResponse(
                         id=match["id"],
+                        score=match.get("score", 0.0),
                         values=match.get("values", [])[:10],  # Truncate values
                         metadata=movie
                     )
