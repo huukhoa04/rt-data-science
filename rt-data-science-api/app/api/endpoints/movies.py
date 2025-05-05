@@ -4,6 +4,7 @@ from services.vector_service import VectorService
 from core.config import RECORD_NAMESPACE
 from models.pinecone_model import Movie, MovieResponse
 from models.schemas import MoviePaginationRequest, MovieSearchRequest, MovieRecommendRequest
+from utils.movie_text_processor import MovieTextProcessor
 
 router = APIRouter()
 vector_service = VectorService()
@@ -153,6 +154,23 @@ async def get_recommendations(request: MovieRecommendRequest = Body(...)):
     Get movie recommendations based on a text query.
     """
     try:
+        # Process the query text with MovieTextProcessor
+
+        # Create processor instance
+        processor = MovieTextProcessor()
+
+        # Process the query text to extract structured information
+        processed_data = processor.process_movie_data(request.query)
+
+        # Format the processed data for embedding
+        query_for_embedding = processor.format_for_embedding(processed_data)
+
+        # If the query is too generic or couldn't be processed well, use the original
+        if not query_for_embedding or len(query_for_embedding) < 10:
+            query_for_embedding = request.query
+
+        print(f"Original query: {request.query}")
+        print(f"Processed query for embedding: {query_for_embedding}")
         # Generate embedding for the query text
         embedding = await vector_service.get_text_embedding(request.query)
         
