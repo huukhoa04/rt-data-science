@@ -1,11 +1,9 @@
-// src/pages/home.jsx
 import { useNavigate } from 'react-router-dom';
 import MovieCard from '../../components/MovieCard';
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  // Sample movie data (replace with actual data from API or state)
   const movies = [
     {
       slug: 'thunderbolts-1',

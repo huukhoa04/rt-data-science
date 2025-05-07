@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 
-// Định nghĩa kiểu cho dữ liệu phim
 interface Movie {
   slug: string;
   title: string;
@@ -20,10 +19,9 @@ interface Movie {
 }
 
 const MovieDetailPage = () => {
-  const { slug } = useParams<{ slug: string }>(); // Lấy slug từ URL
+  const { slug } = useParams<{ slug: string }>(); 
   const navigate = useNavigate();
 
-  // Dữ liệu mẫu (thay bằng API nếu cần)
   const movie: Movie = {
     slug: "thunderbolts-1",
     title: "ThunderBolts",
@@ -46,7 +44,6 @@ const MovieDetailPage = () => {
       "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/8ebb5ad1-b608-40df-b81d-5aed4784b640",
   };
 
-  // Giả lập logic: nếu slug không khớp, trả về thông báo lỗi (thay bằng API 404)
   if (slug !== movie.slug) {
     return <div>Phim không tìm thấy!</div>;
   }

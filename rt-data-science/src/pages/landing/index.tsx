@@ -1,11 +1,10 @@
-import { useNavigate } from 'react-router-dom'; // Import useNavigate từ react-router-dom
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
-  const navigate = useNavigate(); // Khởi tạo navigate
+  const navigate = useNavigate();
 
-  // Hàm handleClick để điều hướng đến trang home
   const handleClick = () => {
-    navigate('/home'); // Điều hướng đến route /home
+    navigate("/home");
   };
 
   return (
@@ -23,9 +22,7 @@ export default function LandingPage() {
               <span className="text-[#FFFFFF] text-[16px] mr-[23px]">
                 Option
               </span>
-              <span className="text-[#FFFFFF] text-[16px]">
-                Option
-              </span>
+              <span className="text-[#FFFFFF] text-[16px]">Option</span>
             </div>
           </div>
           <div className="flex items-center self-stretch pt-[53px] pb-[53px] pl-[64px] pr-[64px] mb-[323px] ml-[80px] mr-[80px]">
@@ -38,7 +35,11 @@ export default function LandingPage() {
                   Data science
                 </span>
                 <span className="text-[#FFFFFF] text-[16px]">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries,
                 </span>
               </div>
               <div className="flex items-start">
@@ -52,7 +53,7 @@ export default function LandingPage() {
                 </button>
                 <button
                   className="flex flex-col shrink-0 items-start bg-transparent text-left pt-[8px] pb-[8px] pl-[16px] pr-[16px] rounded-[6px] border-[1px] border-solid border-[#E2E8F0]"
-                  onClick={handleClick} // Gắn sự kiện handleClick
+                  onClick={handleClick}
                 >
                   <span className="text-[#E2E8F0] text-[16px] font-bold">
                     Getting Started
@@ -75,7 +76,7 @@ export default function LandingPage() {
           </div>
           <button
             className="flex flex-col items-center self-stretch bg-[#FFFFFF] text-left pt-[17px] pb-[17px] rounded-tl-[16px] rounded-tr-[16px] border-0"
-            onClick={handleClick} // Gắn sự kiện handleClick
+            onClick={handleClick}
           >
             <span className="text-[#0B0B0B] text-[14px] font-bold">
               rt-data-science 2025

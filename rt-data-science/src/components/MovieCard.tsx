@@ -1,7 +1,5 @@
-// src/components/MovieCard.jsx
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-// Định nghĩa kiểu cho props
 interface MovieCardProps {
   imageSrc: string;
   title: string;
