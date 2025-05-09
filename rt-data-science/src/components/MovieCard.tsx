@@ -11,17 +11,20 @@ const MovieCard = ({ imageSrc, title, genres, slug }: MovieCardProps) => {
   return (
     <Link
       to={`/movie/${slug}`}
-      className="flex flex-1 flex-col items-start pt-[10px] pb-[10px] mr-[54px] rounded-[8px] border-[1px] border-solid border-[#202023]"
+      className="flex flex-col bg-white rounded-xl shadow-md overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow duration-200 box-border"
     >
-      <img
-        src={imageSrc}
-        alt={title}
-        className="self-stretch h-[223px] mb-[8px] ml-[10px] mr-[10px] rounded-[8px] object-fill"
-      />
-      <span className="text-[#000000] text-[18px] font-bold mb-[8px] ml-[10px]">
-        {title}
-      </span>
-      <span className="text-[#000000] text-[10px] ml-[10px]">{genres}</span>
+      <div className="aspect-[2/3] overflow-hidden rounded-lg">
+        <img src={imageSrc} alt={title} className="h-full object-cover" />
+      </div>
+
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-black mb-2 line-clamp-2 overflow-hidden leading-snug min-h-[3rem]">
+          {title}
+        </h3>
+        <p className="text-sm text-gray-600 line-clamp-1 overflow-hidden leading-snug min-h-[1.25rem]">
+          {genres}
+        </p>
+      </div>
     </Link>
   );
 };

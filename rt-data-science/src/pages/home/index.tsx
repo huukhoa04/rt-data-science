@@ -1,153 +1,187 @@
-import { useNavigate } from 'react-router-dom';
-import MovieCard from '../../components/MovieCard';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MovieCard from "../../components/MovieCard";
+import LoadingPage from "../../components/Loading";
+import HeaderComponent from "../../components/Header";
+
+interface Movie {
+  slug: string;
+  title: string;
+  posterSrc: string;
+  genres: string;
+  rated: string;
+  runtime: string;
+  release: string;
+  cast: string;
+  criticsScore: string;
+  audienceScore: string;
+  criticsReviews: string;
+  audienceRatings: string;
+  description: string;
+  criticsConsensus: string;
+  consensusIconSrc: string;
+}
 
 const HomePage = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [paginationTokens, setPaginationTokens] = useState<string[]>([""]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const movies = [
-    {
-      slug: 'thunderbolts-1',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/f2287e79-9116-4173-90c9-3109ddc9dfb5',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-2',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/1b31e70e-c48e-43a8-a1f2-13e8872e1c25',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-3',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/6d976a51-a0d9-4d10-863b-65b63bcbd67f',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-4',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/bfedbc7f-3e9f-40cd-ae62-2e5d6e3fdbae',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-5',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/faa92b4d-0787-447a-aa6a-8300a758e5a6',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-6',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/f1926856-b0ef-41ab-8f94-08adebd1a479',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-7',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/def964bb-fe98-4ce9-be7e-5947327bd43e',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-8',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/455e1408-0b72-4f75-9e64-f69410757bef',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-9',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/24e07565-2000-47bd-86ac-984227cac0c8',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-    {
-      slug: 'thunderbolts-10',
-      imageSrc: 'https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/5d96ef78-9380-435a-8f26-b0fd71e8b7c3',
-      title: 'ThunderBolts',
-      genres: 'Action, Adventure, Crime, Drama',
-    },
-  ];
+  useEffect(() => {
+    const fetchMovies = async () => {
+      setLoading(true);
+      const cacheKey = `movies_page_${currentPage}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        setMovies(JSON.parse(cached));
+        setLoading(false);
+        return;
+      }
+      const token = paginationTokens[currentPage] || "";
+      const url = token
+        ? `http://localhost:5000/api/movies?pagination_token=${encodeURIComponent(
+            token
+          )}`
+        : "http://localhost:5000/api/movies";
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`Lỗi ${res.status}: ${res.statusText}`);
+        }
+        const data = await res.json();
+        const moviesArray = Array.isArray(data.movies) ? data.movies : [];
+        const mappedMovies = moviesArray.map((item: any) => {
+          const metadataParts = item.metadata.metadata?.split(", ") || [];
+          return {
+            slug: item.id,
+            title: item.metadata.title || "",
+            posterSrc: item.metadata.visual || "",
+            genres: item.metadata.genres || "",
+            rated: metadataParts[0] || "",
+            runtime: metadataParts[2] || "",
+            release: metadataParts[1] || "",
+            cast: item.metadata.cast || "",
+            criticsScore: item.metadata.criticsScore || "",
+            audienceScore: item.metadata.audienceScore || "",
+            criticsReviews: item.metadata.criticReviews || "",
+            audienceRatings: item.metadata.audienceVerifiedCount || "",
+            description: item.metadata.description || "",
+            criticsConsensus: item.metadata.criticsConsensus || "",
+            consensusIconSrc: "",
+          };
+        });
+        setMovies(mappedMovies);
+        localStorage.setItem(cacheKey, JSON.stringify(mappedMovies));
+        if (
+          data.pagination_token &&
+          !paginationTokens.includes(data.pagination_token)
+        ) {
+          setPaginationTokens((prev) => {
+            const newTokens = [...prev];
+            newTokens[currentPage + 1] = data.pagination_token;
+            return newTokens;
+          });
+        }
+      } catch (err) {
+        console.error("Lỗi khi lấy phim:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovies();
+  }, [currentPage]);
+
+  const getFilteredMovies = () => {
+    if (!searchQuery) return movies;
+    const allMovies: Movie[] = [];
+    for (let i = 0; ; i++) {
+      const cacheKey = `movies_page_${i}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (!cached) break;
+      const pageMovies = JSON.parse(cached);
+      allMovies.push(...pageMovies);
+    }
+
+    return allMovies.filter((movie) =>
+      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const filteredMovies = getFilteredMovies();
+
+  const handleMovieClick = (movie: Movie) => {
+    navigate(`/movie/${movie.slug}`, { state: { movie } });
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
 
   return (
-    <div className="flex flex-col bg-[#FFFFFF]">
-      <div className="self-stretch bg-[#EFEFEF] h-[1030px]">
-        <div className="flex flex-col items-start self-stretch pt-[27px] pb-[12px] mb-[32px]">
-          <div className="flex items-start mb-[20px] ml-[144px]">
-            <span className="text-[#0B0B0B] text-[20px] mr-[183px]">
-              Rotten Tomatoes
-            </span>
-            <input
-              type="text"
-              placeholder="Search"
-              className="shrink-0 text-[#1E1E1E] bg-[#FFFFFF] text-[16px] pt-[12px] pb-[12px] pl-[16px] pr-[16px] mr-[157px] rounded-[9999px] border-[1px] border-solid border-[#D9D9D9]"
-            />
-            <div className="flex shrink-0 items-center pr-[3px]">
-              <span className="text-[#0B0B0B] text-[16px] mr-[23px]">
-                Option
-              </span>
-              <span className="text-[#0B0B0B] text-[16px] mr-[23px]">
-                Option
-              </span>
-              <span className="text-[#0B0B0B] text-[16px]">
-                Option
-              </span>
-            </div>
+    <div className="flex flex-col self-stretch bg-gray-100 gap-8">
+      <HeaderComponent onSearch={setSearchQuery} />
+      <div className="flex flex-col items-center px-4">
+        <span className="text-red-600 text-3xl mb-8 font-bold">
+          Movies in Theaters
+        </span>
+        {loading ? (
+          <LoadingPage />
+        ) : !filteredMovies.length ? (
+          <div className="text-center py-10 text-gray-600">
+            {searchQuery
+              ? "Không tìm thấy phim khớp với tìm kiếm."
+              : "Không có phim để hiển thị. Vui lòng kiểm tra API."}
           </div>
-          <div className="flex justify-between items-start self-stretch pl-[274px] pr-[274px] ml-[144px] mr-[144px]">
+        ) : (
+          <div className="w-full max-w-7xl">
+            {[0, 1].map((row) => (
+              <div
+                key={row}
+                className="grid grid-cols-5 gap-4 mb-14 justify-center"
+              >
+                {filteredMovies.slice(row * 5, row * 5 + 5).map((movie) => (
+                  <div
+                    key={movie.slug}
+                    onClick={() => handleMovieClick(movie)}
+                    className="cursor-pointer"
+                  >
+                    <MovieCard
+                      imageSrc={movie.posterSrc}
+                      title={movie.title}
+                      genres={movie.genres}
+                      slug={movie.slug}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+        {!searchQuery && (
+          <div className="flex gap-4 mt-4">
             <button
-              className="flex flex-col shrink-0 items-start bg-[#FFFFFF] text-left pt-[8px] pb-[8px] pl-[49px] pr-[49px] rounded-[6px] border-[1px] border-solid border-[#000000] shadow-[0px_4px_4px_#00000040]"
-              onClick={() => navigate('/recommend')}
+              onClick={handlePrevPage}
+              disabled={currentPage === 0}
+              className="px-4 py-2 bg-gray-300 rounded"
             >
-              <span className="text-[#000000] text-[16px] font-bold">
-                Gợi ý phim
-              </span>
+              Trước
             </button>
             <button
-              className="flex flex-col shrink-0 items-start bg-[#FFFFFF] text-left pt-[8px] pb-[8px] pl-[57px] pr-[57px] rounded-[6px] border-[1px] border-solid border-[#000000] shadow-[0px_4px_4px_#00000040]"
-              onClick={() => alert('Pressed!')}
+              onClick={handleNextPage}
+              className="px-4 py-2 bg-gray-300 rounded"
             >
-              <span className="text-[#000000] text-[16px] font-bold">
-                Phổ biến
-              </span>
-            </button>
-            <button
-              className="flex flex-col shrink-0 items-start bg-[#FFFFFF] text-left pt-[8px] pb-[8px] pl-[48px] pr-[48px] rounded-[6px] border-[1px] border-solid border-[#000000] shadow-[0px_4px_4px_#00000040]"
-              onClick={() => alert('Pressed!')}
-            >
-              <span className="text-[#000000] text-[16px] font-bold">
-                Mới ra mắt
-              </span>
+              Sau
             </button>
           </div>
-        </div>
-        <div className="flex flex-col items-start self-stretch pt-[16px] pb-[16px] mb-[131px] ml-[81px] mr-[49px]">
-          <span className="text-[#AC3434] text-[32px] mb-[33px] ml-[64px]">
-            Movies in Theaters
-          </span>
-          <div className="self-stretch ml-[64px] mr-[64px]">
-            <div className="flex items-start self-stretch mb-[54px]">
-              {movies.slice(0, 5).map((movie, index) => (
-                <MovieCard
-                  key={index}
-                  imageSrc={movie.imageSrc}
-                  title={movie.title}
-                  genres={movie.genres}
-                  slug={movie.slug}
-                />
-              ))}
-            </div>
-            <div className="flex items-start self-stretch">
-              {movies.slice(5).map((movie, index) => (
-                <MovieCard
-                  key={index + 5}
-                  imageSrc={movie.imageSrc}
-                  title={movie.title}
-                  genres={movie.genres}
-                  slug={movie.slug}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
