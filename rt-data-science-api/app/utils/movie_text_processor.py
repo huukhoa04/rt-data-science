@@ -10,7 +10,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.chunk import ne_chunk
 from nltk.tag import pos_tag
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import spacy
+# import spacy
 
 # Download necessary NLTK datasets
 # nltk.download('punkt')
@@ -22,7 +22,7 @@ import spacy
 # nltk.download('vader_lexicon')
 
 # Load spaCy model for named entity recognition
-nlp = spacy.load('en_core_web_sm')
+# nlp = spacy.load('en_core_web_sm')
 
 # Updated genres list based on text-processor.md
 genres = [
@@ -447,13 +447,14 @@ class MovieTextProcessor:
         if self.is_movie_query(text):
             return "Movie Query"
             
-        doc = nlp(text)
+        # Comment out spaCy usage
+        # doc = nlp(text)
+        # 
+        # # Look for WORK_OF_ART entities that might be movie titles
+        # for ent in doc.ents:
+        #     if ent.label_ in ['WORK_OF_ART', 'ORG', 'EVENT'] and len(ent.text.split()) <= 8:
+        #         return ent.text
         
-        # Look for WORK_OF_ART entities that might be movie titles
-        for ent in doc.ents:
-            if ent.label_ in ['WORK_OF_ART', 'ORG', 'EVENT'] and len(ent.text.split()) <= 8:
-                return ent.text
-                
         # Search for quoted text which often contains titles
         title_matches = re.findall(r'"([^"]+)"', text)
         if title_matches:
@@ -519,10 +520,14 @@ class MovieTextProcessor:
         if not text:
             return "Not specified"
             
-        doc = nlp(text)
+        # Comment out spaCy usage
+        # doc = nlp(text)
+        # 
+        # # Extract all person entities
+        # persons = [ent.text for ent in doc.ents if ent.label_ == 'PERSON']
         
-        # Extract all person entities
-        persons = [ent.text for ent in doc.ents if ent.label_ == 'PERSON']
+        # Fallback implementation without spaCy
+        persons = []
         
         # Find names preceded by role indicators
         role_patterns = [
