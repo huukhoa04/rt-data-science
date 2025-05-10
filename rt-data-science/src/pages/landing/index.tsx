@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
-  
   const navigate = useNavigate();
 
   return (
@@ -10,9 +9,9 @@ export default function LandingPage() {
         <div className="flex items-center px-36 py-12">
           <span className="flex-1 text-white text-xl">Rotten Tomatoes</span>
           <div className="flex items-center">
-            <span className="text-white text-base mr-6">Option</span>
-            <span className="text-white text-base mr-6">Option</span>
-            <span className="text-white text-base">Option</span>
+            <span className="text-white mr-6">Option</span>
+            <span className="text-white mr-6">Option</span>
+            <span className="text-white ">Option</span>
           </div>
         </div>
         <div className="flex items-center px-16 py-12 mx-20 mb-32">
@@ -22,7 +21,7 @@ export default function LandingPage() {
                 Our project
               </span>
               <span className="text-white text-xl mb-4">Data science</span>
-              <span className="text-white text-base">
+              <span className="text-white text-justify ">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
@@ -35,7 +34,7 @@ export default function LandingPage() {
                 className="bg-white text-left py-2 px-4 mr-3 rounded-md border border-gray-200"
                 onClick={() => navigate("/home")}
               >
-                <span className="text-gray-900 text-base font-bold">
+                <span className="text-gray-900 font-bold">
                   Getting Started
                 </span>
               </button>
@@ -43,7 +42,7 @@ export default function LandingPage() {
                 className="bg-transparent text-left py-2 px-4 rounded-md border border-gray-200"
                 onClick={() => navigate("/home")}
               >
-                <span className="text-gray-200 text-base font-bold">
+                <span className="text-gray-200 font-bold">
                   Getting Started
                 </span>
               </button>

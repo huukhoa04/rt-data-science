@@ -32,7 +32,7 @@ const MovieDetailPage = () => {
   }
 
   return (
-    <div className="flex flex-col bg-[#EFEFEF] gap-8">
+    <div className="flex flex-col bg-[#EFEFEF] w-full gap-8">
       {/* Header */}
       <div className="flex justify-between items-center px-50 pt-14">
         <div className="text-2xl font-bold ">
@@ -46,92 +46,93 @@ const MovieDetailPage = () => {
       </div>
 
       {/* Movie Details */}
-      <div className="flex items-start self-stretch mx-48">
-        {/* Left: Poster and Info */}
-        <div className="flex-1">
-          <div className="flex h-[500px] shrink-0">
+      <div className="flex items-start self-stretch mx-40">
+        {/* Left*/}
+        <div className="flex flex-col items-start ">
+          {/* Movie Poster and Info */}
+          <div className="flex h-fit gap-8">
             <img
               src={movie.posterSrc}
               alt={movie.title}
-              className="mr-10 w-[450px] object-fill rounded-2xl"
+              className="w-[250px] h-fit rounded-2xl"
             />
-            <div className="flex flex-1 flex-col items-start bg-[#DAD8D8] pl-3 pt-3 gap-1 rounded-2xl">
-              <span className="text-5xl font-bold">{movie.title}</span>
-              <div className="flex items-center pr-[3px]">
-                <span className="text-[16px] mr-[23px]">Genres:</span>
-                <span className="text-[16px]">{movie.genres}</span>
+            <div className="flex flex-1 h-fit flex-col items-start bg-[#DAD8D8] px-3 pt-3 gap-2 rounded-2xl">
+              <span className="text-4xl w-fit h-fit font-bold">
+                {movie.title}
+              </span>
+              <div className="flex items-start w-fit h-fit">
+                <span className="mr-[13px]">Genres:</span>
+                <span>{movie.genres}</span>
               </div>
-              <div className="flex items-start pr-[4px]">
-                <span className="text-[16px] mb-[1px] mr-[28px]">Rated:</span>
-                <span className="text-[16px]">{movie.rated}</span>
+              <div className="flex items-start w-fit h-fit">
+                <span className="mr-[22px]">Rated:</span>
+                <span>{movie.rated}</span>
               </div>
-              <div className="flex items-start pr-[4px]">
-                <span className="text-[16px] mb-[1px] mr-[10px]">Runtime:</span>
-                <span className="text-[16px]">{movie.runtime}</span>
+              <div className="flex items-start w-fit h-fit">
+                <span className="mr-[5px]">Runtime:</span>
+                <span>{movie.runtime}</span>
               </div>
-              <div className="flex items-start pr-[4px]">
-                <span className="text-[16px] mb-[1px] mr-[14px]">Release:</span>
-                <span className="text-[16px]">{movie.release}</span>
+              <div className="flex items-start w-fit h-fit">
+                <span className="mr-[10px]">Release:</span>
+                <span>{movie.release}</span>
               </div>
-              <div className="flex items-start pr-[3px]">
-                <span className="text-[16px] mr-[44px]">Cast:</span>
-                <span className="text-[16px] w-[255px]">{movie.cast}</span>
+              <div className="flex items-start w-full h-fit">
+                <span className="mr-[32px]">Cast:</span>
+                <span className="text-justify ">{movie.cast}</span>
               </div>
-              <div className="flex items-start self-stretch pl-[79px] pr-[79px] ml-[10px] mr-[10px]">
-                <div className="flex flex-col shrink-0 items-center pt-[4px] pb-[4px] mr-[20px]">
-                  <button
-                    className="flex flex-col items-start bg-[#F63434] text-left pt-[12px] pb-[12px] pl-[11px] pr-[11px] mb-[4px] rounded-[4px] border-0"
-                    onClick={() => alert("Pressed!")}
-                  >
+
+              {/* Ratings */}
+              <div className="flex h-fit w-full justify-center my-3 gap-8">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center bg-[#F63434] px-2 py-3 rounded-[4px]">
                     <span className="text-[20px]">{movie.criticsScore}</span>
-                  </button>
-                  <span className="text-[16px] font-bold mb-[4px]">
-                    Critics Score
-                  </span>
+                  </div>
+                  <span className="font-bold">Critics Score</span>
                   <span className="text-[#1A85EA] text-[10px]">
                     {movie.criticsReviews}
                   </span>
                 </div>
-                <div className="flex flex-1 flex-col pt-[4px] pb-[4px]">
-                  <div className="flex flex-col self-stretch bg-[#5CEE27] pt-[13px] pb-[13px] mb-[4px] ml-[28px] mr-[28px] rounded-[2px]">
-                    <span className="text-[20px] text-center ml-[12px] mr-[12px]">
-                      {movie.audienceScore}
-                    </span>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center bg-[#5CEE27] px-2 py-3 rounded-[4px]]">
+                    <span className="text-[20px]">{movie.audienceScore}</span>
                   </div>
-                  <span className="text-[16px] font-bold mb-[4px]">
-                    Audience Score
-                  </span>
-                  <span className="text-[#1A85EA] text-[10px] ml-[19px] mr-[19px]">
+                  <span className="font-bold">Audience Score</span>
+                  <span className="text-[#1A85EA] text-[10px]">
                     {movie.audienceRatings}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-start self-stretch pt-[10px] pb-[10px]">
-            <span className="text-[36px] mb-[11px]">Description</span>
-            <span className="text-[20px]">{movie.description}</span>
+
+          {/* Description */}
+          <div className="flex flex-col items-start mb-10 w-full h-fit gap-3">
+            <span className="text-3xl font-bold">Description</span>
+            <span className="text-justify">{movie.description}</span>
           </div>
         </div>
 
         {/* Right: Critics Consensus */}
-        <div className="flex flex-col shrink-0 items-start pt-[8px] pb-[8px]">
-          <div className="flex items-start pr-[3px] mb-[10px] ml-[13px]">
-            {movie.criticsConsensus && (
-              <img
-                src={movie.criticsConsensus}
-                alt="Critics Consensus Icon"
-                className="w-[34px] h-[32px] mr-[10px] object-fill"
+        <div className="flex flex-col items-start w-[1750px] h-fit ml-8 gap-3">
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="green"
+              className="size-6 inline "
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
               />
-            )}
-            <span className="text-[32px] font-bold">Critics Consensus</span>
+            </svg>
+            <span className="text-4xl font-bold">Critics Consensus</span>
           </div>
-          <span className="text-[20px] w-[298px] mb-[10px] ml-[13px]">
-            {movie.criticsConsensus}
-          </span>
-          <span className="text-[#1A85EA] text-[16px] ml-[13px]">
-            Read Critics Reviews
-          </span>
+          <span className="w-fit text-justify">{movie.criticsConsensus}</span>
+          <a href="" className="text-[#1A85EA] w-full text-center">Read Critics Reviews</a>
         </div>
       </div>
     </div>

@@ -111,7 +111,7 @@ const RecommendPage = () => {
       {/* Input Section */}
       <div className="flex flex-col items-center gap-[8px] mx-48">
         <span className="text-3xl font-bold">Nhập yêu cầu của bạn:</span>
-        <div className="flex items-start self-stretch bg-white h-70 rounded-[6px] border-[1px] border-solid border-[#CBD5E1]">
+        <div className="flex items-start self-stretch bg-white h-70 rounded-[6px] border-1 border-solid border-[#CBD5E1]">
           <input
             className="text-gray w-full ml-4 mt-3 border-none outline-none"
             placeholder="Ví dụ: Tôi muốn xem phim hành động có điểm IMDb trên 8"
@@ -128,44 +128,44 @@ const RecommendPage = () => {
       </div>
 
       {/* Suggestion Buttons */}
-      <div className="flex items-center justify-between gap-[8px] mx-48">
+      <div className="flex items-center justify-between gap-3 mx-48">
         <button
-          className="flex flex-col items-center bg-white px-2 py-1 rounded-[6px] border-0 shadow-[0px_2px_4px_#1E293B40]"
+          className="bg-white px-2 py-1 rounded-[6px] shadow-[0px_2px_4px_#1E293B40]"
           onClick={() => fetchMovies("Phim hành động rating cao")}
         >
-          <span className="text-[#000000] text-[14px] font-bold">
+          <span className="text-[14px] font-bold">
             Phim hành động rating cao
           </span>
         </button>
         <button
-          className="flex flex-col items-center bg-white px-2 py-1 rounded-[6px] border-0 shadow-[0px_2px_4px_#1E293B40]"
+          className="bg-white px-2 py-1 rounded-[6px] shadow-[0px_2px_4px_#1E293B40]"
           onClick={() => fetchMovies("Phim do Christopher Nolan đạo diễn")}
         >
-          <span className="text-[#000000] text-[14px] font-bold">
+          <span className="text-[14px] font-bold">
             Phim do Christopher Nolan đạo diễn
           </span>
         </button>
         <button
-          className="flex flex-col items-center bg-white px-2 py-1 rounded-[6px] border-0 shadow-[0px_2px_4px_#1E293B40]"
+          className="bg-white px-2 py-1 rounded-[6px] shadow-[0px_2px_4px_#1E293B40]"
           onClick={() => fetchMovies("Phim của Marvel Studio")}
         >
-          <span className="text-[#000000] text-[14px] font-bold">
+          <span className="text-[14px] font-bold">
             Phim của Marvel Studio
           </span>
         </button>
         <button
-          className="flex flex-col items-center bg-white px-2 py-1 rounded-[6px] border-0 shadow-[0px_2px_4px_#1E293B40]"
+          className="bg-white px-2 py-1 rounded-[6px] shadow-[0px_2px_4px_#1E293B40]"
           onClick={() => fetchMovies("Phim năm 2020 trở lên")}
         >
-          <span className="text-[#000000] text-[14px] font-bold">
+          <span className="text-[14px] font-bold">
             Phim năm 2020 trở lên
           </span>
         </button>
         <button
-          className="flex flex-col items-center bg-white px-2 py-1 rounded-[6px] border-0 shadow-[0px_2px_4px_#1E293B40]"
+          className="bg-white px-2 py-1 rounded-[6px] shadow-[0px_2px_4px_#1E293B40]"
           onClick={() => fetchMovies("Phim hoạt hình hay cho cả gia đình")}
         >
-          <span className="text-[#000000] text-[14px] font-bold">
+          <span className="text-[14px] font-bold">
             Phim hoạt hình hay cho cả gia đình
           </span>
         </button>

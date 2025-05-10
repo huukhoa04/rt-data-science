@@ -19,7 +19,6 @@ interface Movie {
   audienceRatings: string;
   description: string;
   criticsConsensus: string;
-  consensusIconSrc: string;
 }
 
 const HomePage = () => {
@@ -70,7 +69,6 @@ const HomePage = () => {
             audienceRatings: item.metadata.audienceVerifiedCount || "",
             description: item.metadata.description || "",
             criticsConsensus: item.metadata.criticsConsensus || "",
-            consensusIconSrc: "",
           };
         });
         setMovies(mappedMovies);
