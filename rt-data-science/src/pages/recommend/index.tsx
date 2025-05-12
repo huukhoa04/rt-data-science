@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getRecommendedMovies } from "../../services/homeService";
 import MovieCard from "../../components/MovieCard";
 import LoadingPage from "../../components/Loading";
 
@@ -31,22 +32,7 @@ const RecommendPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const url = "http://localhost:5000/api/movies/recommend";
-      const payload = {
-        query: searchQuery || "recommended movies",
-        top_k: 5,
-      };
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        throw new Error(`Lỗi ${res.status}: ${res.statusText}`);
-      }
-      const data = await res.json();
+      const data =  await getRecommendedMovies(searchQuery);
       if (data.detail) {
         throw new Error(data.detail);
       }
@@ -95,7 +81,7 @@ const RecommendPage = () => {
   };
 
   return (
-    <div className="flex flex-col bg-gray-100 gap-8">
+    <div className="flex flex-col min-h-dvh max-h-full bg-gray-100 gap-8">
       {/* Header */}
       <div className="flex justify-between items-center px-50 pt-12">
         <div className="text-2xl font-bold whitespace-nowrap">

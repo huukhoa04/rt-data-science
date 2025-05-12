@@ -32,7 +32,7 @@ const MovieDetailPage = () => {
   }
 
   return (
-    <div className="flex flex-col bg-[#EFEFEF] w-full gap-8">
+    <div className="flex flex-col bg-[#EFEFEF] h-full w-full gap-8">
       {/* Header */}
       <div className="flex justify-between items-center px-50 pt-14">
         <div className="text-2xl font-bold ">
@@ -56,7 +56,7 @@ const MovieDetailPage = () => {
               alt={movie.title}
               className="w-[250px] h-fit rounded-2xl"
             />
-            <div className="flex flex-1 h-fit flex-col items-start bg-[#DAD8D8] px-3 pt-3 gap-2 rounded-2xl">
+            <div className="flex flex-1 h-fit flex-col items-start bg-[#DAD8D8] pl-3 pr-5 pt-3 gap-2 rounded-2xl">
               <span className="text-4xl w-fit h-fit font-bold">
                 {movie.title}
               </span>

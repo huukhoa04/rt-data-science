@@ -1,17 +1,16 @@
-import { Link } from "react-router-dom";
-
 interface MovieCardProps {
   imageSrc: string;
   title: string;
   genres: string;
   slug: string;
+  onClick?: () => void;
 }
 
-const MovieCard = ({ imageSrc, title, genres, slug }: MovieCardProps) => {
+const MovieCard = ({ imageSrc, title, genres, onClick }: MovieCardProps) => {
   return (
-    <Link
-      to={`/movie/${slug}`}
-      className="flex flex-col bg-white rounded-xl shadow-md overflow-hidden border border-gray-300 hover:shadow-lg box-border"
+    <div
+      onClick={onClick}
+      className="cursor-pointer flex flex-col bg-white rounded-xl shadow-md overflow-hidden border border-gray-300 hover:shadow-lg box-border"
     >
       <div className="aspect-[2/3] overflow-hidden rounded-lg">
         <img src={imageSrc} alt={title} className="h-full object-cover" />
@@ -25,7 +24,7 @@ const MovieCard = ({ imageSrc, title, genres, slug }: MovieCardProps) => {
           {genres}
         </p>
       </div>
-    </Link>
+    </div>
   );
 };
 

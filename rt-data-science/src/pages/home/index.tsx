@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMovieList } from "../../services/homeService";
 import MovieCard from "../../components/MovieCard";
 import LoadingPage from "../../components/Loading";
 import HeaderComponent from "../../components/Header";
@@ -25,9 +26,24 @@ const HomePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const [paginationTokens, setPaginationTokens] = useState<string[]>([""]);
+  const [paginationTokens, setPaginationTokens] = useState<string[]>(() => {
+    const savedTokens = localStorage.getItem("paginationTokens");
+    try {
+      const tokens = savedTokens ? JSON.parse(savedTokens) : [""];
+      return Array.isArray(tokens)
+        ? tokens.map((t) => (t == null ? "" : t))
+        : [""];
+    } catch (err) {
+      console.error("Lỗi khi khôi phục paginationTokens:", err);
+      return [""];
+    }
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("paginationTokens", JSON.stringify(paginationTokens));
+  }, [paginationTokens]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -35,22 +51,18 @@ const HomePage = () => {
       const cacheKey = `movies_page_${currentPage}`;
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
-        setMovies(JSON.parse(cached));
+        try {
+          setMovies(JSON.parse(cached));
+        } catch (err) {
+          console.error(`Lỗi khi phân tích cache (${cacheKey}):`, err);
+        }
         setLoading(false);
         return;
       }
+
       const token = paginationTokens[currentPage] || "";
-      const url = token
-        ? `http://localhost:5000/api/movies?pagination_token=${encodeURIComponent(
-            token
-          )}`
-        : "http://localhost:5000/api/movies";
       try {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Lỗi ${res.status}: ${res.statusText}`);
-        }
-        const data = await res.json();
+        const data = await getMovieList(token);
         const moviesArray = Array.isArray(data.movies) ? data.movies : [];
         const mappedMovies = moviesArray.map((item: any) => {
           const metadataParts = item.metadata.metadata?.split(", ") || [];
@@ -73,6 +85,7 @@ const HomePage = () => {
         });
         setMovies(mappedMovies);
         localStorage.setItem(cacheKey, JSON.stringify(mappedMovies));
+
         if (
           data.pagination_token &&
           !paginationTokens.includes(data.pagination_token)
@@ -91,7 +104,7 @@ const HomePage = () => {
     };
 
     fetchMovies();
-  }, [currentPage]);
+  }, [currentPage, paginationTokens]);
 
   const getFilteredMovies = () => {
     if (!searchQuery) return movies;
@@ -100,12 +113,20 @@ const HomePage = () => {
       const cacheKey = `movies_page_${i}`;
       const cached = localStorage.getItem(cacheKey);
       if (!cached) break;
-      const pageMovies = JSON.parse(cached);
-      allMovies.push(...pageMovies);
+      try {
+        const pageMovies = JSON.parse(cached);
+        if (Array.isArray(pageMovies)) {
+          allMovies.push(...pageMovies);
+        }
+      } catch (err) {
+        console.error(
+          `Lỗi khi phân tích dữ liệu từ localStorage (${cacheKey}):`,
+          err
+        );
+      }
     }
-
     return allMovies.filter((movie) =>
-      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+      movie.title.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
   };
 
@@ -124,7 +145,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col self-stretch bg-gray-100 gap-8">
+    <div className="flex flex-col self-stretch min-h-dvh max-h-full bg-gray-100 gap-8">
       <HeaderComponent onSearch={setSearchQuery} />
       <div className="flex flex-col items-center px-4">
         <span className="text-red-600 text-3xl mb-8 font-bold">
@@ -174,6 +195,7 @@ const HomePage = () => {
             </button>
             <button
               onClick={handleNextPage}
+              disabled={!paginationTokens[currentPage + 1]}
               className="px-4 py-2 bg-gray-300 rounded"
             >
               Sau
